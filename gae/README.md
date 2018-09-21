@@ -98,8 +98,8 @@ access to localhost:8080
 
 ## Deploy to GAE
 ```
-$ mvn appengine:update
+$ mvn appengine:deploy
 ```
 
 ## Test GAE
-access to 
+access to https://<project-id>.appspot.com  
