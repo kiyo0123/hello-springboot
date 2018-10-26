@@ -71,7 +71,8 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
@@ -80,21 +81,22 @@ public class HelloAppEngine {
 	public static void main(String[] args) {
 		SpringApplication.run(HelloAppEngine.class, args);
 	}
-	
-	@GetMapping("/")
+
+	@GetMapping("/hello")
 	public String hello() {
-			return "Hello Spring Boot!";
+		return "Hello Spring Boot on GAE!! JSUG";
 	}
 }
+
 ```
 
 ## Test Application 
 
 ```
-$ mvn appengine:run
+$ mvn clean appengine:run
 ```
 
-access to localhost:8080
+access to localhost:8080/hello
 
 ## Deploy to GAE
 ```
@@ -102,4 +104,11 @@ $ mvn appengine:deploy
 ```
 
 ## Test GAE
-access to https://<project-id>.appspot.com  
+access to https://<project-id>.appspot.com/hello
+
+## load test
+```
+ab -n 10000 -c 100 fukudak-java.appspot.com/he
+```
+
+
