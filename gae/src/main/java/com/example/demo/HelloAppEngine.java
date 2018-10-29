@@ -15,6 +15,6 @@ public class HelloAppEngine {
 
 	@GetMapping("/hello")
 	public String hello() {
-		return "Hello Spring Boot on GAE!! JSUG";
+		return "Hello Spring Boot on GCP!! JSUG";
 	}
 }
