@@ -14,6 +14,7 @@ curl https://start.spring.io/starter.tgz -d dependencies=web \
 ## Modify pom.xml
 
 Remove spring-boot-starter-tomcat and add javax.servlet-api. This is because GAE is using Jetty while default Spring Boot uses Tomcat.  
+You can skip this when using latest appengine sdk (TODO)
 ```
 		<!-- remove below 
 		<dependency>
@@ -107,7 +108,7 @@ access to https://<project-id>.appspot.com/hello
 
 ## load test
 ```
-ab -n 10000 -c 100 fukudak-java.appspot.com/he
+ab -n 10000 -c 100 fukudak-java.appspot.com/hello
 ```
 
 
@@ -122,7 +123,7 @@ gcloud container clusters create \
 ```
 
 
-## jar package
+## jar package (optional)
 ```
 <packaging>jar</packaging> <!-- jar package for Docker -->
 ```
@@ -136,7 +137,7 @@ mvn packag
 ```
 touch Dockerfile
 ```
-
+1. if you want to run jar file 
 ```
 # Start with a base image containing Java runtime
 FROM openjdk:8-jdk-alpine
@@ -157,6 +158,16 @@ ADD ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 ```
 
+2. if you want to deploy war file to tomcat
+```
+FROM tomcat:8.5-alpine
+COPY target/demo-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/app.war
+RUN sh -c 'touch /usr/local/tomcat/webapps/app.war'
+EXPOSE 8080
+ENTRYPOINT [ "sh", "-c", "java -Dspring.profiles.active=docker -Djava.security.egd=file:/dev/./urandom -jar /usr/local/tomcat/webapps/app.war" ]
+```
+
+
 ## build Docker images 
 ```
 docker build -t gcr.io/<project-id>/hello-spring .
@@ -166,6 +177,13 @@ push to Cloud Repository
 ```
 gcloud docker -- push gcr.io/<project-id>/hello-spring
 ```
+
+or alternatively
+```
+gcloud auth configure-docker
+docker push grc.io/<fukudak-id>/hello-spring
+```
+
 
 ## test Docker 
 ```
@@ -177,8 +195,20 @@ curl localhost:8080/hello
 ```
 
 ## Kubernetes config files
+
 ```
 
+```
+
+## run k8s object through interactive mode
+create deployments and pods
+```
+kubectl run hello-spring --image gcr.io/fukudak-java/hello-spring --port 8080
+```
+
+create svc
+```
+kubectl expose deployment hello-spring --type "LoadBalancer"
 ```
 
 
