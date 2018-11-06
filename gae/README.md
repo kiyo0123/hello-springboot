@@ -184,6 +184,14 @@ gcloud auth configure-docker
 docker push grc.io/<fukudak-id>/hello-spring
 ```
 
+Cloud Build
+```
+gcloud builds submit --tag gcr.io/[PROJECT_ID]/hello-spring .
+```
+
+
+
+
 
 ## test Docker 
 ```

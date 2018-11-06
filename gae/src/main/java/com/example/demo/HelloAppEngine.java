@@ -13,8 +13,8 @@ public class HelloAppEngine {
 		SpringApplication.run(HelloAppEngine.class, args);
 	}
 
-	@GetMapping("/hello")
+	@GetMapping("/")
 	public String hello() {
-		return "Hello Spring Boot on GCP!! JSUG";
+		return "hello spring on GCP";
 	}
 }
